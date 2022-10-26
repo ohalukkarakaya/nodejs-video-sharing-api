@@ -9,9 +9,14 @@ const connect = () => {
         () => {
           console.log("MongoDB Status: Connected");
         }
+    ).catch(
+      (err) => {
+        throw err;
+      }
     );
 }
 
 app.listen(8800, () => {
-  console.log("connected");
+  connect();
+  console.log("Server Status: Connected");
 });
