@@ -42,4 +42,4 @@ const VideoSchema = new mongoose.Schema(
   {timestamps: true}
 );
 
-export default mongoose.model("Vide", VideoSchema);
+export default mongoose.model("Videos", VideoSchema);
