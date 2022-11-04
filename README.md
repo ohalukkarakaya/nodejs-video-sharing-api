@@ -5,7 +5,7 @@ auth
 
 | Route | HTTP Verb	 | POST body & header	 | Description	 |
 | --- | --- | --- | --- |
-| /auth/signup | `POST` | body: { name: String, password: String, email: 'test@email.com', img: String? } | Creates a new user. |
+| /auth/signup | `POST` | body: { name: String, password: String, email: String, img: String? } | Creates a new user. |
 | /auth/signin | `POST` | body: { name: String, password: String } | For Login. |
 
 # User / Channel
