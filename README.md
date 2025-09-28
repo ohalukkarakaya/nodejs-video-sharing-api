@@ -5,6 +5,11 @@ It includes authentication, user/channel management, video upload, likes/dislike
 
 ---
 
+## 🎯 Intended Audience
+This documentation is intended for **developers** building or integrating video sharing features.
+
+---
+
 ## 🚀 Features
 - User signup & login with JWT authentication  
 - Manage user/channel profiles  
@@ -107,33 +112,6 @@ Use this token as `Authorization: Bearer <token>`.
 | `/api/videos/tags?tags=tag1,tag2` | `GET` | – | Get videos by tags |
 | `/api/videos/search?q=query` | `GET` | – | Search videos by title |
 
-✅ **Example: Upload Video**
-```http
-POST /api/videos
-Content-Type: application/json
-Authorization: Bearer <token>
-
-{
-  "title": "My Travel Vlog",
-  "desc": "Exploring Istanbul",
-  "imgUrl": "https://example.com/thumbnail.jpg",
-  "videoUrl": "https://example.com/video.mp4"
-}
-```
-
-Response:
-```json
-{
-  "message": "Video uploaded successfully",
-  "video": {
-    "id": "60ad0b5c9f1b2a001f9c1234",
-    "title": "My Travel Vlog",
-    "desc": "Exploring Istanbul",
-    "views": 0
-  }
-}
-```
-
 ---
 
 ## 💬 Comment Routes
@@ -154,6 +132,13 @@ Response:
 5. Like or dislike a video  
 6. Add a comment under a video  
 7. Explore trending or random videos  
+
+---
+
+## 📈 System Flow Diagram
+```
+[ Client ] → [ API Endpoints ] → [ MongoDB Database ]
+```
 
 ---
 
