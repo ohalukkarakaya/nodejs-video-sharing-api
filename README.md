@@ -136,7 +136,7 @@ Use this token as `Authorization: Bearer <token>`.
 ---
 
 ## 📈 System Flow Diagram
-```
+```mermaid
 flowchart LR
   C[Client/Web/Mobile] -->|JWT| API[Express API]
   API --> AUTH[Auth Middleware]
@@ -150,7 +150,7 @@ flowchart LR
 ---
 
 ## Subscribe + Upload Sequence
-```
+```mermaid
 sequenceDiagram
   participant U as User
   participant API as API
