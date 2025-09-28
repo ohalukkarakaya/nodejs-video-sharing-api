@@ -137,8 +137,45 @@ Use this token as `Authorization: Bearer <token>`.
 
 ## 📈 System Flow Diagram
 ```
-[ Client ] → [ API Endpoints ] → [ MongoDB Database ]
+flowchart LR
+  C[Client/Web/Mobile] -->|JWT| API[Express API]
+  API --> AUTH[Auth Middleware]
+  API --> VID[Videos Controller]
+  API --> COM[Comments Controller]
+  VID --> DB[(MongoDB)]
+  COM --> DB
+  API --> C
 ```
+
+---
+
+## Subscribe + Upload Sequence
+```
+sequenceDiagram
+  participant U as User
+  participant API as API
+  participant DB as MongoDB
+
+  U->>API: PUT /api/users/sub/:targetId (Bearer)
+  API->>DB: push targetId to subscriptions
+  DB-->>API: OK
+  API-->>U: 200 {message: "subscribed"}
+
+  U->>API: POST /api/videos {title, videoUrl} (Bearer)
+  API->>DB: insert video {ownerId, meta}
+  DB-->>API: _id
+  API-->>U: 201 {videoId, ...}
+
+```
+
+---
+
+## ⚠️Error Handling
+- `400`: Invalid query/parameter (`tags`, `q`)
+- `401`: Token missing/corrupted
+- `404`: Video/channel error
+- `413`: (Future) Upload limit error
+- `500`: Server Systems
 
 ---
 
