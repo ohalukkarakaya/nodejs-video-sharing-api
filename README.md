@@ -1,42 +1,161 @@
-# nodejs-video-sharing-api
-nodeJs video sharing app api
-auth
-# Users
+# 📺 Video Sharing API
 
-| Route | HTTP Verb	 | POST body & header	 | Description	 |
-| --- | --- | --- | --- |
-| /auth/signup | `POST` | body: { name: String, password: String, email: String, img: String? } | Creates a new user. |
-| /auth/signin | `POST` | body: { name: String, password: String } | For Login. |
+This project is a **Node.js + Express + MongoDB** backend for a simple video sharing application.  
+It includes authentication, user/channel management, video upload, likes/dislikes, subscriptions, and comments.
 
-# User / Channel
+---
 
-| Route | HTTP Verb	 | POST body & header	 | Description	 |
-| --- | --- | --- | --- |
-| /api/users/$user_id | `PUT` | body: { name: String?, password: String?, email: String?, img: String? } | Updates users info with new value you gave. |
-| /api/users/$user_id | `DELETE` | Empty | Delete user |
-| /api/users/sub/$target_user_id | `PUT` | Empty | Subscribes target user |
-| /api/users/unsub/$target_user_id | `PUT` | Empty | UnSubscribes target user |
-| /api/users/like/$video_id | `PUT` | Empty | Likes a video |
-| /api/users/dislike/$video_id | `PUT` | Empty | Likes a video |
+## 🚀 Features
+- User signup & login with JWT authentication  
+- Manage user/channel profiles  
+- Subscribe / unsubscribe to channels  
+- Upload, update, and fetch videos  
+- Like / dislike videos  
+- Comment on videos  
+- Browse videos by trend, tags, search, or random  
 
+---
 
-# Video
+## 🛠️ Installation
 
-| Route | HTTP Verb	 | POST body & header	 | Description	 |
-| --- | --- | --- | --- |
-| /api/videos | `POST` | body: { title: String, desc: String, imgUrl: String, videoUrl: String } | Creates a video |
-| /api/videos/find/$video_id | `GET` | Empty | Get video by id |
-| /api/videos/sub | `GET` | Empty | Get subscribed channels videos |
-| /api/videos/trend | `GET` | Empty | Get trend videos |
-| /api/videos/random | `GET` | Empty | Get random videos |
-| /api/videos/tags?tags=$String | `GET` | Empty | Gets videos with searched tag |
-| /api/videos/search?q=$String | `GET` | Empty | Searches video with name |
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ohalukkarakaya/nodejs-video-sharing-api.git
+   cd nodejs-video-sharing-api
+   ```
 
-# Comment
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-| Route | HTTP Verb	 | POST body & header	 | Description	 |
-| --- | --- | --- | --- |
-| /api/comments | `POST` | body: { desc: String, videoId: String } | Creates comment. |
-| /api/comments/$video_id | `GET` | Empty | Gets all comments of a video |
+3. Create a `.env` file:
+   ```env
+   PORT=3000
+   MONGO_URI=mongodb://localhost:27017/videos
+   JWT_SECRET=yourSecretKey
+   ```
 
+4. Start the server:
+   ```bash
+   npm start
+   ```
+   The API will be available at `http://localhost:3000/`
 
+---
+
+## 👤 Authentication
+
+### Sign Up
+```http
+POST /auth/signup
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "email": "alice@email.com",
+  "password": "1234",
+  "img": "https://example.com/avatar.png"
+}
+```
+
+### Sign In
+```http
+POST /auth/signin
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "password": "1234"
+}
+```
+
+✅ **Response**
+```json
+{
+  "status": true,
+  "token": "eyJhbGciOiJIUzI1..."
+}
+```
+
+Use this token as `Authorization: Bearer <token>`.
+
+---
+
+## 👥 User / Channel Routes
+
+| Route | Method | Body | Description |
+|-------|--------|------|-------------|
+| `/api/users/:id` | `PUT` | `{ name?, email?, password?, img? }` | Update user info |
+| `/api/users/:id` | `DELETE` | – | Delete user |
+| `/api/users/sub/:targetId` | `PUT` | – | Subscribe to a channel |
+| `/api/users/unsub/:targetId` | `PUT` | – | Unsubscribe from a channel |
+| `/api/users/like/:videoId` | `PUT` | – | Like a video |
+| `/api/users/dislike/:videoId` | `PUT` | – | Dislike a video |
+
+---
+
+## 🎥 Video Routes
+
+| Route | Method | Body | Description |
+|-------|--------|------|-------------|
+| `/api/videos` | `POST` | `{ title, desc, imgUrl, videoUrl }` | Upload a new video |
+| `/api/videos/find/:id` | `GET` | – | Get video by ID |
+| `/api/videos/sub` | `GET` | – | Get subscribed channels' videos |
+| `/api/videos/trend` | `GET` | – | Get trending videos |
+| `/api/videos/random` | `GET` | – | Get random videos |
+| `/api/videos/tags?tags=tag1,tag2` | `GET` | – | Get videos by tags |
+| `/api/videos/search?q=query` | `GET` | – | Search videos by title |
+
+✅ **Example: Upload Video**
+```http
+POST /api/videos
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+  "title": "My Travel Vlog",
+  "desc": "Exploring Istanbul",
+  "imgUrl": "https://example.com/thumbnail.jpg",
+  "videoUrl": "https://example.com/video.mp4"
+}
+```
+
+Response:
+```json
+{
+  "message": "Video uploaded successfully",
+  "video": {
+    "id": "60ad0b5c9f1b2a001f9c1234",
+    "title": "My Travel Vlog",
+    "desc": "Exploring Istanbul",
+    "views": 0
+  }
+}
+```
+
+---
+
+## 💬 Comment Routes
+
+| Route | Method | Body | Description |
+|-------|--------|------|-------------|
+| `/api/comments` | `POST` | `{ desc, videoId }` | Add a comment to a video |
+| `/api/comments/:videoId` | `GET` | – | Get all comments for a video |
+
+---
+
+## 📊 Example Usage Flow
+
+1. Sign up as a new user  
+2. Login and receive a token  
+3. Upload a video  
+4. Subscribe to another user's channel  
+5. Like or dislike a video  
+6. Add a comment under a video  
+7. Explore trending or random videos  
+
+---
+
+## 📌 Notes
+- Documentation is improved iteratively as new features are added.
